@@ -169,6 +169,20 @@ void MPU6050::readRawAll(void)
     rawGyroZ |= wire->read();
 }
 
+void MPU6050::updateGyroValues(float factor)
+{
+    gyroX = (float)rawGyroX / factor;
+    gyroY = (float)rawGyroY / factor;
+    gyroZ = (float)rawGyroZ / factor;
+}
+
+void MPU6050::updateAccValues(float factor)
+{
+    accX = (float)rawAccX / factor;
+    accY = (float)rawAccY / factor;
+    accZ = (float)rawAccZ / factor;
+}
+
 void MPU6050::readConfig(void)
 {
     // Begin comm. with MPU 6050

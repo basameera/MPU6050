@@ -6,30 +6,47 @@
 
 #include <MPU6050.h>
 
-MPU6050 IMU (Wire);
+MPU6050 IMU(Wire);
 
-char buff[50];
 
-void setup() {
+void setup()
+{
   IMU.initialize(I2C_SPEED_400K);
   Serial.begin(115200);
 
-  if (IMU.isAvailable()) {
+  if (IMU.isAvailable())
+  {
     Serial.println("IMU OK");
-  } else {
+  }
+  else
+  {
     Serial.println("No IMU");
   }
-  Serial.println("AX\tAY\tAZ\tgX\tgY\tgZ\tTemp");
+
+  IMU.writeRegister(MPU_PWR_MGMT_1, 0x00);
+  IMU.writeRegister(MPU_GYRO_CONFIG, GYRO_FS_SEL_1);
+  IMU.writeRegister(MPU_ACCEL_CONFIG, ACC_AFS_SEL_1);
+
+  Serial.println("AX\tAY\tAZ\tgX\tgY\tgZ");
 }
 
-void loop() {
+void loop()
+{
   //  IMU.readRawGyro();
   //  IMU.readRawAcc();
   //  IMU.readRawTemp();
   IMU.readRawAll();
 
-  sprintf(buff, "%d\t%d\t%d\t%d\t%d\t%d\t%d", IMU.GetRawAccX(), IMU.GetRawAccY(), IMU.GetRawAccZ(), IMU.GetRawGyroX(), IMU.GetRawGyroY(), IMU.GetRawGyroZ(), IMU.GetRawTemp());
-  Serial.println(buff);
-  delay(20);
+  IMU.updateGyroValues(G_SSF_1);
+  IMU.updateAccValues(A_SSF_1);
 
+  Serial.print(IMU.GetAccX()); Serial.print("\t");
+  Serial.print(IMU.GetAccY()); Serial.print("\t");
+  Serial.print(IMU.GetAccZ()); Serial.print("\t");
+  Serial.print(IMU.GetGyroX()); Serial.print("\t");
+  Serial.print(IMU.GetGyroY()); Serial.print("\t");
+  Serial.println(IMU.GetGyroZ());
+
+
+  delay(20);
 }

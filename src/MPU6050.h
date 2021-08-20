@@ -51,6 +51,19 @@
 #define I2C_SPEED_100K 100000
 #define I2C_SPEED_400K 400000
 
+// Sensitivity Scale Factor (SSF)
+// - Gyro
+#define G_SSF_0 131f
+#define G_SSF_1 65.5f
+#define G_SSF_2 32.8f
+#define G_SSF_3 16.4f
+
+// - Acc
+#define A_SSF_0 16384.0f
+#define A_SSF_1 8192.0f
+#define A_SSF_2 4096.0f
+#define A_SSF_3 2048.0f
+
 class MPU6050
 {
 public:
@@ -82,6 +95,17 @@ public:
     uint8_t Get_ACCEL_CONFIG() { return ACCEL_CONFIG_val; };
     uint8_t Get_PWR_MGMT_1() { return PWR_MGMT_1_val; };
 
+    void updateGyroValues(float factor);
+    void updateAccValues(float factor);
+
+    float GetAccX() { return accX; };
+    float GetAccY() { return accY; };
+    float GetAccZ() { return accZ; };
+    float GetGyroX() { return gyroX; };
+    float GetGyroY() { return gyroY; };
+    float GetGyroZ() { return gyroZ; };
+    float GetTemp() { return temp; };
+
 private:
     // I²C stuff
     TwoWire *wire;
@@ -89,6 +113,7 @@ private:
 
     int who_am_i;
     int16_t rawAccX, rawAccY, rawAccZ, rawGyroX, rawGyroY, rawGyroZ, rawTemp;
+    float accX, accY, accZ, gyroX, gyroY, gyroZ, temp;
 
     uint8_t SMPLRT_DIV_val, CONFIG_val, GYRO_CONFIG_val, ACCEL_CONFIG_val, PWR_MGMT_1_val;
 };
