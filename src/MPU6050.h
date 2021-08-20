@@ -54,9 +54,9 @@ class MPU6050
 {
 public:
     MPU6050(TwoWire &w, int i2cAddress = MPU_ADDRESS);
-    void blink(void); //TODO: remove this
+
     // Setup method
-    void Initialize(int speed = I2C_SPEED_100K);
+    void initialize(int speed = I2C_SPEED_100K);
     uint8_t readRegister(uint8_t reg);
     bool isAvailable(void);
 
@@ -78,8 +78,8 @@ public:
 private:
     // I²C stuff
     TwoWire *wire;
-
     int address;
+
     int who_am_i;
     int16_t rawAccX, rawAccY, rawAccZ, rawGyroX, rawGyroY, rawGyroZ, rawTemp;
 };

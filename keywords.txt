@@ -12,7 +12,25 @@ MPU6050	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-blink	KEYWORD2
+initialize	KEYWORD2
+readRegister	KEYWORD2
+isAvailable	KEYWORD2
+
+readRawTemp	KEYWORD2
+readRawGyro	KEYWORD2
+readRawAcc	KEYWORD2
+readRawAll	KEYWORD2
+readConfig	KEYWORD2
+writeRegister	KEYWORD2
+
+GetRawAccX	KEYWORD2
+GetRawAccY	KEYWORD2
+GetRawAccZ	KEYWORD2
+GetRawGyroX	KEYWORD2
+GetRawGyroY	KEYWORD2
+GetRawGyroZ	KEYWORD2
+GetRawTemp	KEYWORD2
+
 
 #######################################
 # Constants (LITERAL1)

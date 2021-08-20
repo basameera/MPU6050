@@ -15,15 +15,7 @@ MPU6050::MPU6050(TwoWire &w, int i2cAddress)
     address = i2cAddress;
 }
 
-void MPU6050::blink(void)
-{
-    digitalWrite(13, HIGH);
-    delay(1000);
-    digitalWrite(13, LOW);
-    delay(1000);
-}
-
-void MPU6050::Initialize(int speed)
+void MPU6050::initialize(int speed)
 {
     // Beginning Wire
     wire->begin();

@@ -6,7 +6,7 @@ long tm;
 char buff[50];
 
 void setup() {
-  IMU.Initialize(I2C_SPEED_400K);
+  IMU.initialize(I2C_SPEED_400K);
   Serial.begin(115200);
 
   if (IMU.isAvailable()) {
