@@ -31,11 +31,12 @@
 #define MPU_WHO_AM_I_VAL 0x68
 
 // - Config register values
+// -- MPU_GYRO_CONFIG values
 #define GYRO_FS_SEL_0 0x00     // 250 deg/s
 #define GYRO_FS_SEL_1 (1 << 3) // 500 deg/s
 #define GYRO_FS_SEL_2 (2 << 3) // 1000 deg/s
 #define GYRO_FS_SEL_3 (3 << 3) // 2000 deg/s
-
+// -- MPU_ACCEL_CONFIG
 #define ACC_AFS_SEL_0 0x00     // 2g
 #define ACC_AFS_SEL_1 (1 << 3) // 4g
 #define ACC_AFS_SEL_2 (2 << 3) // 8g
@@ -75,6 +76,12 @@ public:
     int16_t GetRawGyroZ() { return rawGyroZ; };
     int16_t GetRawTemp() { return rawTemp; };
 
+    uint8_t Get_SMPLRT_DIV() { return SMPLRT_DIV_val; };
+    uint8_t Get_CONFIG() { return CONFIG_val; };
+    uint8_t Get_GYRO_CONFIG() { return GYRO_CONFIG_val; };
+    uint8_t Get_ACCEL_CONFIG() { return ACCEL_CONFIG_val; };
+    uint8_t Get_PWR_MGMT_1() { return PWR_MGMT_1_val; };
+
 private:
     // I²C stuff
     TwoWire *wire;
@@ -82,6 +89,8 @@ private:
 
     int who_am_i;
     int16_t rawAccX, rawAccY, rawAccZ, rawGyroX, rawGyroY, rawGyroZ, rawTemp;
+
+    uint8_t SMPLRT_DIV_val, CONFIG_val, GYRO_CONFIG_val, ACCEL_CONFIG_val, PWR_MGMT_1_val;
 };
 
 #endif

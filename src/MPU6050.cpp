@@ -183,25 +183,15 @@ void MPU6050::readConfig(void)
     // Request 6 bytes from the previously given address
     wire->requestFrom(address, 4);
 
-    byte SMPLRT_DIV = wire->read();
-    byte CONFIG = wire->read();
+    SMPLRT_DIV_val, CONFIG_val, GYRO_CONFIG_val, ACCEL_CONFIG_val, PWR_MGMT_1_val;
 
-    byte GYRO_CONFIG = wire->read();
-    byte ACCEL_CONFIG = wire->read();
+    SMPLRT_DIV_val = wire->read();
+    CONFIG_val = wire->read();
 
-    // Serial.println("\n----------");
-    // Serial.print("SMPLRT_DIV: 0x");
-    // Serial.println(SMPLRT_DIV, HEX);
+    GYRO_CONFIG_val = wire->read();
+    ACCEL_CONFIG_val = wire->read();
 
-    // Serial.print("CONFIG: 0x");
-    // Serial.println(CONFIG, HEX);
-
-    // Serial.print("GYRO_CONFIG: 0x");
-    // Serial.println(GYRO_CONFIG, HEX);
-
-    // Serial.print("ACCEL_CONFIG: 0x");
-    // Serial.println(ACCEL_CONFIG, HEX);
-    // Serial.println("----------");
+    PWR_MGMT_1_val = this->readRegister(MPU_PWR_MGMT_1);
 }
 
 void MPU6050::writeRegister(uint8_t reg, uint8_t data)
