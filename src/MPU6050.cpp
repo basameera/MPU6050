@@ -44,7 +44,7 @@ uint8_t MPU6050::readRegister(uint8_t reg)
     wire->endTransmission(false);
 
     // Request 6 bytes from the previously given address
-    wire->requestFrom(MPU_ADD, 1);
+    wire->requestFrom(address, 1);
 
     return wire->read();
 }
@@ -60,3 +60,175 @@ bool MPU6050::isAvailable(void)
         return false;
     }
 }
+
+void MPU6050::readRawTemp(void)
+{
+    // Begin comm. with MPU 6050
+    wire->beginTransmission(address);
+
+    //  Write address to start reading from
+    wire->write(MPU_TEMP_ADD);
+
+    //  End transmission: false = repeated start
+    wire->endTransmission(false);
+
+    // Request 6 bytes from the previously given address
+    wire->requestFrom(address, 2);
+
+    rawTemp = wire->read() << 8;
+    rawTemp |= wire->read();
+}
+
+void MPU6050::readRawGyro(void)
+{
+    // Begin comm. with MPU 6050
+    wire->beginTransmission(address);
+
+    //  Write address to start reading from
+    wire->write(MPU_GYRO_ADD);
+
+    //  End transmission: false = repeated start
+    wire->endTransmission(false);
+
+    // Request 6 bytes from the previously given address
+    wire->requestFrom(address, 6);
+
+    // Gyro X
+    rawGyroX = wire->read() << 8;
+    rawGyroX |= wire->read();
+
+    // Gyro Y
+    rawGyroY = wire->read() << 8;
+    rawGyroY |= wire->read();
+
+    // Gyro Z
+    rawGyroZ = wire->read() << 8;
+    rawGyroZ |= wire->read();
+
+}
+
+// void readRawAcc(void)
+// {
+//     // Begin comm. with MPU 6050
+//     wire->beginTransmission(MPU_ADD);
+
+//     //  Write address to start reading from
+//     wire->write(MPU_ACC_ADD);
+
+//     //  End transmission: false = repeated start
+//     wire->endTransmission(false);
+
+//     // Request 6 bytes from the previously given address
+//     wire->requestFrom(MPU_ADD, 6);
+
+//     // Acc X
+//     rawAccX = wire->read() << 8;
+//     rawAccX |= wire->read();
+
+//     // Acc Y
+//     rawAccY = wire->read() << 8;
+//     rawAccY |= wire->read();
+
+//     // Acc Z
+//     rawAccZ = wire->read() << 8;
+//     rawAccZ |= wire->read();
+
+//     sprintf(buff, "%d\t%d\t%d", rawAccX, rawAccY, rawAccZ);
+// }
+
+// void readRawAll(void)
+// {
+//     // This is faster than initializing the bus twice (for gyro and acc)
+//     // Begin comm. with MPU 6050
+//     wire->beginTransmission(MPU_ADD);
+
+//     //  Write address to start reading from
+//     wire->write(MPU_ACC_ADD);
+
+//     //  End transmission: false = repeated start
+//     wire->endTransmission(false);
+
+//     // Request 6 bytes from the previously given address
+//     wire->requestFrom(MPU_ADD, 14);
+
+//     // Acc X
+//     rawAccX = wire->read() << 8;
+//     rawAccX |= wire->read();
+
+//     // Acc Y
+//     rawAccY = wire->read() << 8;
+//     rawAccY |= wire->read();
+
+//     // Acc Z
+//     rawAccZ = wire->read() << 8;
+//     rawAccZ |= wire->read();
+
+//     // TEMP
+//     rawTemp = wire->read() << 8;
+//     rawTemp |= wire->read();
+
+//     // Gyro X
+//     rawGyroX = wire->read() << 8;
+//     rawGyroX |= wire->read();
+
+//     // Gyro Y
+//     rawGyroY = wire->read() << 8;
+//     rawGyroY |= wire->read();
+
+//     // Gyro Z
+//     rawGyroZ = wire->read() << 8;
+//     rawGyroZ |= wire->read();
+
+//     sprintf(buff, "%d\t%d\t%d\t%d\t%d\t%d", rawAccX, rawAccY, rawAccZ, rawGyroX, rawGyroY, rawGyroZ);
+// }
+
+// void readConfig(void)
+// {
+//     // Begin comm. with MPU 6050
+//     wire->beginTransmission(MPU_ADD);
+
+//     //  Write address to start reading from
+//     wire->write(MPU_SMPLRT_DIV);
+
+//     //  End transmission: false = repeated start
+//     wire->endTransmission(false);
+
+//     // Request 6 bytes from the previously given address
+//     wire->requestFrom(MPU_ADD, 4);
+
+//     byte SMPLRT_DIV = wire->read();
+//     byte CONFIG = wire->read();
+
+//     byte GYRO_CONFIG = wire->read();
+//     byte ACCEL_CONFIG = wire->read();
+
+//     Serial.println("\n----------");
+//     Serial.print("SMPLRT_DIV: 0x");
+//     Serial.println(SMPLRT_DIV, HEX);
+
+//     Serial.print("CONFIG: 0x");
+//     Serial.println(CONFIG, HEX);
+
+//     Serial.print("GYRO_CONFIG: 0x");
+//     Serial.println(GYRO_CONFIG, HEX);
+
+//     Serial.print("ACCEL_CONFIG: 0x");
+//     Serial.println(ACCEL_CONFIG, HEX);
+//     Serial.println("----------");
+// }
+
+// void writeRegister(byte regAddress, byte data)
+// {
+
+//     // Begin comm. with MPU 6050
+//     wire->beginTransmission(MPU_ADD);
+
+//     //  Write address to start reading from
+//     wire->write(regAddress);
+
+//     //  Write data
+//     wire->write(data);
+
+//     // End tx
+//     wire->endTransmission();
+// }

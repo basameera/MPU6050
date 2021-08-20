@@ -3,6 +3,7 @@
 MPU6050 IMU (Wire);
 
 long tm;
+char buff[50];
 
 void setup() {
   IMU.Initialize(I2C_SPEED_400K);
@@ -20,7 +21,12 @@ void setup() {
   
 }
 
+int data;
+
 void loop() {
-  // put your main code here, to run repeatedly:
-  IMU.blink();
+  IMU.readRawGyro();
+  sprintf(buff, "%d\t%d\t%d", IMU.GetRawGyroX(), IMU.GetRawGyroY(), IMU.GetRawGyroZ());
+  Serial.println(buff);
+  delay(50);
+
 }

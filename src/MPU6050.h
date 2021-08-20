@@ -12,7 +12,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#define MPU_ADD 0x68
+#define MPU_ADDRESS 0x68
 
 // MPU 6050 address define: Based on https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf
 // - data registers
@@ -53,12 +53,24 @@
 class MPU6050
 {
 public:
-    MPU6050(TwoWire &w, int i2cAddress = MPU_ADD);
-    void blink(void);
+    MPU6050(TwoWire &w, int i2cAddress = MPU_ADDRESS);
+    void blink(void); //TODO: remove this
     // Setup method
     void Initialize(int speed = I2C_SPEED_100K);
     uint8_t readRegister(uint8_t reg);
     bool isAvailable(void);
+
+    void readRawTemp(void);
+    void readRawGyro(void);
+
+    int16_t GetRawAccX() { return rawAccX; };
+    int16_t GetRawAccY() { return rawAccY; };
+    int16_t GetRawAccZ() { return rawAccZ; };
+    int16_t GetRawGyroX() { return rawGyroX; };
+    int16_t GetRawGyroY() { return rawGyroY; };
+    int16_t GetRawGyroZ() { return rawGyroZ; };
+
+    int16_t rawAccX, rawAccY, rawAccZ, rawGyroX, rawGyroY, rawGyroZ, rawTemp;
 
 private:
     // I²C stuff
@@ -66,7 +78,6 @@ private:
 
     int address;
     int who_am_i;
-    int16_t rawAccX, rawAccY, rawAccZ, rawGyroX, rawGyroY, rawGyroZ, rawTemp;
 };
 
 #endif
