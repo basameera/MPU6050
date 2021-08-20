@@ -8,23 +8,16 @@
 #include <Arduino.h>
 #include "MPU6050.h"
 
-MPU6050::MPU6050(int pin)
+MPU6050::MPU6050(TwoWire &w, int i2cAddress)
 {
-    pinMode(pin, OUTPUT);
-    pinNumber = pin;
+    pinMode(13, OUTPUT);
 }
 
-void MPU6050::blink(bool value)
+void MPU6050::blink(void)
 {
-    if (value == true)
-    {
-        digitalWrite(pinNumber, HIGH);
-        delay(1000);
-        digitalWrite(pinNumber, LOW);
-        delay(1000);
-    }
-    else
-    {
-        digitalWrite(pinNumber, LOW);
-    }
+
+    digitalWrite(13, HIGH);
+    delay(1000);
+    digitalWrite(13, LOW);
+    delay(1000);
 }
