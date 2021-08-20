@@ -62,6 +62,10 @@ public:
 
     void readRawTemp(void);
     void readRawGyro(void);
+    void readRawAcc(void);
+    void readRawAll(void);
+    void readConfig(void);
+    void writeRegister(uint8_t reg, uint8_t data);
 
     int16_t GetRawAccX() { return rawAccX; };
     int16_t GetRawAccY() { return rawAccY; };
@@ -69,8 +73,7 @@ public:
     int16_t GetRawGyroX() { return rawGyroX; };
     int16_t GetRawGyroY() { return rawGyroY; };
     int16_t GetRawGyroZ() { return rawGyroZ; };
-
-    int16_t rawAccX, rawAccY, rawAccZ, rawGyroX, rawGyroY, rawGyroZ, rawTemp;
+    int16_t GetRawTemp() { return rawTemp; };
 
 private:
     // I²C stuff
@@ -78,6 +81,7 @@ private:
 
     int address;
     int who_am_i;
+    int16_t rawAccX, rawAccY, rawAccZ, rawGyroX, rawGyroY, rawGyroZ, rawTemp;
 };
 
 #endif
