@@ -3,11 +3,11 @@
     Copyright (c) 2021 Sameera
 
 */
-
 #include <MPU6050.h>
 
 MPU6050 IMU (Wire);
 
+long tm;
 char buff[50];
 
 void setup() {
@@ -23,13 +23,15 @@ void setup() {
 }
 
 void loop() {
+  tm = micros();
   //  IMU.readRawGyro();
   //  IMU.readRawAcc();
   //  IMU.readRawTemp();
   IMU.readRawAll();
+  tm = micros() - tm;
 
-  sprintf(buff, "%d\t%d\t%d\t%d\t%d\t%d\t%d", IMU.GetRawAccX(), IMU.GetRawAccY(), IMU.GetRawAccZ(), IMU.GetRawGyroX(), IMU.GetRawGyroY(), IMU.GetRawGyroZ(), IMU.GetRawTemp());
-  Serial.println(buff);
-  delay(20);
-
+  Serial.print(tm); Serial.println(" us"); delay(50);
+  
+  //sprintf(buff, "%d\t%d\t%d\t%d\t%d\t%d\t%d", IMU.GetRawAccX(), IMU.GetRawAccY(), IMU.GetRawAccZ(), IMU.GetRawGyroX(), IMU.GetRawGyroY(), IMU.GetRawGyroZ(), IMU.GetRawTemp());Serial.println(buff);delay(20);
+  
 }
