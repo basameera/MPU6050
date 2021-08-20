@@ -57,15 +57,15 @@ public:
     void blink(void);
     // Setup method
     void Initialize(int speed = I2C_SPEED_100K);
-    void readRegister(void);
-
-    int who_am_i;
+    uint8_t readRegister(uint8_t reg);
+    bool isAvailable(void);
 
 private:
     // I²C stuff
     TwoWire *wire;
 
     int address;
+    int who_am_i;
     int16_t rawAccX, rawAccY, rawAccZ, rawGyroX, rawGyroY, rawGyroZ, rawTemp;
 };
 

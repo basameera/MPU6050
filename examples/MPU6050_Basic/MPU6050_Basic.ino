@@ -9,11 +9,10 @@ void setup() {
   Serial.begin(115200);
 
   tm = micros();
-  IMU.readRegister();
   
   Serial.println(micros()-tm);
   
-  if (IMU.who_am_i == MPU_WHO_AM_I_VAL){
+  if (IMU.isAvailable()){
     Serial.println("IMU OK");
   } else {
     Serial.println("No IMU");

@@ -17,7 +17,6 @@ MPU6050::MPU6050(TwoWire &w, int i2cAddress)
 
 void MPU6050::blink(void)
 {
-
     digitalWrite(13, HIGH);
     delay(1000);
     digitalWrite(13, LOW);
@@ -26,21 +25,20 @@ void MPU6050::blink(void)
 
 void MPU6050::Initialize(int speed)
 {
-
     // Beginning Wire
     wire->begin();
     wire->setClock(speed);
-    // TODO: Set clock frequency
+
     // this->BaseInititalize();
 }
 
-void MPU6050::readRegister(void)
+uint8_t MPU6050::readRegister(uint8_t reg)
 {
     // Begin comm. with MPU 6050
     wire->beginTransmission(address);
 
     //  Write address to start reading from
-    wire->write(MPU_WHO_AM_I);
+    wire->write(reg);
 
     //  End transmission: false = repeated start
     wire->endTransmission(false);
@@ -48,5 +46,17 @@ void MPU6050::readRegister(void)
     // Request 6 bytes from the previously given address
     wire->requestFrom(MPU_ADD, 1);
 
-    who_am_i = wire->read();
+    return wire->read();
+}
+
+bool MPU6050::isAvailable(void)
+{
+    if (this->readRegister(MPU_WHO_AM_I) == MPU_WHO_AM_I_VAL)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
