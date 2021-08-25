@@ -7,6 +7,7 @@
 
 #include <Arduino.h>
 #include "MPU6050.h"
+#include <util/delay.h>
 
 MPU6050::MPU6050(TwoWire &w, int i2cAddress)
 {
@@ -20,7 +21,18 @@ void MPU6050::initialize(int speed)
     wire->begin();
     wire->setClock(speed);
 
-    // this->BaseInititalize();
+    this->baseInititalize();
+}
+
+void MPU6050::baseInititalize(void)
+{
+    // initialize variables
+    offsetAccX = 0;
+    offsetAccY = 0;
+    offsetAccZ = 0;
+    offsetGyroX = 0;
+    offsetGyroY = 0;
+    offsetGyroZ = 0;
 }
 
 uint8_t MPU6050::readRegister(uint8_t reg)
@@ -170,9 +182,9 @@ void MPU6050::readRawAll(void)
 
 void MPU6050::updateGyroValues(float factor)
 {
-    gyroX = (float)rawGyroX / factor;
-    gyroY = (float)rawGyroY / factor;
-    gyroZ = (float)rawGyroZ / factor;
+    gyroX = (float)(rawGyroX - offsetGyroX) / factor;
+    gyroY = (float)(rawGyroY - offsetGyroY) / factor;
+    gyroZ = (float)(rawGyroZ - offsetGyroZ) / factor;
 }
 
 void MPU6050::updateAccValues(float factor)
@@ -219,4 +231,59 @@ void MPU6050::writeRegister(uint8_t reg, uint8_t data)
 
     // End tx
     wire->endTransmission();
+}
+
+void MPU6050::setGyroOffset(int16_t x, int16_t y, int16_t z)
+{
+    offsetGyroX = x;
+    offsetGyroY = y;
+    offsetGyroZ = z;
+}
+
+void MPU6050::setAccOffset(int16_t x, int16_t y, int16_t z)
+{
+    offsetAccX = x;
+    offsetAccY = y;
+    offsetAccZ = z;
+}
+
+void MPU6050::discard(void)
+{
+    // discard first 100 readings
+    for (uint16_t loop_x = 0; loop_x < DISCARD_MEASUREMENTS; loop_x++)
+    {
+        this->readRawAll();
+        _delay_ms(1);
+    }
+}
+
+void MPU6050::calibration(void)
+{
+    int16_t Ax = 0,
+            Ay = 0,
+            Az = 0,
+            Gx = 0,
+            Gy = 0,
+            Gz = 0;
+
+    this->discard();
+
+    // TODO: why only Gyro calibration
+
+    for (uint16_t loop_x = 0; loop_x < CALIB_MEASUREMENTS; loop_x++)
+    {
+        this->readRawGyro();
+
+        Gx += rawGyroX;
+        Gy += rawGyroY;
+        Gz += rawGyroZ;
+
+        _delay_ms(1);
+    }
+
+    Gx /= CALIB_MEASUREMENTS;
+    Gy /= CALIB_MEASUREMENTS;
+    Gz /= CALIB_MEASUREMENTS;
+
+    this->setGyroOffset(Gx, Gy, Gz);
 }

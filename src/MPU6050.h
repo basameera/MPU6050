@@ -64,6 +64,10 @@
 #define A_SSF_2 4096.0f
 #define A_SSF_3 2048.0f
 
+// - calibration
+#define DISCARD_MEASUREMENTS 100
+#define CALIB_MEASUREMENTS 1000
+
 class MPU6050
 {
 public:
@@ -71,6 +75,7 @@ public:
 
     // Setup method
     void initialize(int speed = I2C_SPEED_100K);
+    void baseInititalize(void);
     uint8_t readRegister(uint8_t reg);
     bool isAvailable(void);
 
@@ -105,6 +110,13 @@ public:
     float GetGyroY() { return gyroY; };
     float GetGyroZ() { return gyroZ; };
     float GetTemp() { return temp; };
+
+    void setGyroOffset(int16_t x, int16_t y, int16_t z);
+    void setAccOffset(int16_t x, int16_t y, int16_t z);
+    void discard(void);
+    void calibration(void);
+
+    int16_t offsetAccX, offsetAccY, offsetAccZ, offsetGyroX, offsetGyroY, offsetGyroZ;
 
 private:
     // I²C stuff
