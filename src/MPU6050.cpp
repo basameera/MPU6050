@@ -10,7 +10,6 @@
 
 MPU6050::MPU6050(TwoWire &w, int i2cAddress)
 {
-    pinMode(13, OUTPUT);
     wire = &w;
     address = i2cAddress;
 }
@@ -196,8 +195,6 @@ void MPU6050::readConfig(void)
 
     // Request 6 bytes from the previously given address
     wire->requestFrom(address, 4);
-
-    SMPLRT_DIV_val, CONFIG_val, GYRO_CONFIG_val, ACCEL_CONFIG_val, PWR_MGMT_1_val;
 
     SMPLRT_DIV_val = wire->read();
     CONFIG_val = wire->read();
