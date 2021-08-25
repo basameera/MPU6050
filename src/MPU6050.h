@@ -53,7 +53,7 @@
 
 // Sensitivity Scale Factor (SSF)
 // - Gyro
-#define G_SSF_0 131f
+#define G_SSF_0 131.0f
 #define G_SSF_1 65.5f
 #define G_SSF_2 32.8f
 #define G_SSF_3 16.4f
